@@ -1,11 +1,11 @@
-
-import Manager from "./components/Manager";
+import ModalAddSubject from "./components/ModalAddSubject";
 import AppRouter from "./routers/AppRouter";
-
 function App() {
   return (
-    // <AppRouter />
-    <Manager />
+    <div className="w-full min-h-screen">
+      {/* <AppRouter /> */}
+      <ModalAddSubject />
+    </div>
   );
 }
 

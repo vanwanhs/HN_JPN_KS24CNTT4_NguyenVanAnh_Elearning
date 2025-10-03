@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../css/Login.css";
 
 function Login() {
@@ -12,7 +13,9 @@ function Login() {
         login: "",
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         let hasError = false;
@@ -27,19 +30,41 @@ function Login() {
             hasError = true;
         }
 
-        setErrors(newErrors);
+        if (hasError) {
+            setErrors(newErrors);
+            return;
+        }
 
-        if (!hasError) {
-            console.log("Đăng nhập thành công:", { email, password, remember });
+        try {
+            const userRes = await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
+            const managerRes = await axios.get(`http://localhost:8080/manager?email=${email}&password=${password}`);
+            let user = null;
+            let role = "";
+
+            if (userRes.data.length > 0) {
+            user = userRes.data[0];
+            role = "user";
+        } else if (managerRes.data.length > 0) {
+            user = managerRes.data[0];
+            role = "admin";
+        }
+
+localStorage.setItem("user", JSON.stringify({ ...user, role }));
+            localStorage.setItem("user", JSON.stringify(user));
+            if (role === "user") {
+                navigate("/home");
+            } else {
+                navigate("/manager");
+            }
+        } catch (error) {
+            console.error("Lỗi đăng nhập:", error);
         }
     };
 
     return (
         <div className="container">
             <h2>Đăng nhập</h2>
-            <p className="description">
-                Đăng nhập tài khoản để sử dụng hệ thống quản lý.
-            </p>
+            <p className="description">Đăng nhập tài khoản để sử dụng hệ thống quản lý.</p>
             <form id="loginForm" onSubmit={handleSubmit}>
                 <label>Email</label>
                 <input
@@ -74,6 +99,8 @@ function Login() {
                     </div>
                     <a href="#">Quên mật khẩu?</a>
                 </div>
+
+                <span className="error-message">{errors.login}</span>
 
                 <button type="submit">Đăng nhập</button>
             </form>
