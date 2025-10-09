@@ -42,6 +42,7 @@ export default function Register() {
     if (!password) newErrors.password = "Vui lòng nhập mật khẩu";
     if (password !== confirmPassword)
       newErrors.confirmPassword = "Mật khẩu xác nhận không khớp";
+    if(password.length < 8) newErrors.password = "Mật khẩu ít nhất 8 kí tự";
     if (!terms) newErrors.terms = "Bạn cần đồng ý với điều khoản";
 
     const valid = Object.values(newErrors).every((err) => err === "");
@@ -66,7 +67,7 @@ export default function Register() {
         password: password,
         role: "user",
         gender: 0,
-        date_of_birth: "01/01/2000",
+        date_of_birth: "13/12/2000",
         address: "",
         avatar: "https://example.com/default-avatar.jpg",
         phone_number: "",

@@ -41,6 +41,48 @@
       "phone_number": "",
       "created_at": "2025-10-03T07:21:03.956Z",
       "id": 3
+    },
+    {
+      "first_name": "Hấu",
+      "last_name": "Dưa",
+      "email": "kiki@gmail.com",
+      "password": "123456",
+      "role": "user",
+      "gender": 0,
+      "date_of_birth": "01/01/2000",
+      "address": "",
+      "avatar": "https://example.com/default-avatar.jpg",
+      "phone_number": "",
+      "created_at": "2025-10-08T15:14:46.174Z",
+      "id": 4
+    },
+    {
+      "first_name": "nguyne",
+      "last_name": "8888",
+      "email": "hihi@gmail.com",
+      "password": "123456789",
+      "role": "user",
+      "gender": 0,
+      "date_of_birth": "13/12/2000",
+      "address": "",
+      "avatar": "https://example.com/default-avatar.jpg",
+      "phone_number": "",
+      "created_at": "2025-10-09T08:36:14.715Z",
+      "id": 5
+    },
+    {
+      "first_name": "nguyne",
+      "last_name": " 7777",
+      "email": "4hihi@gmail.com",
+      "password": "123456789",
+      "role": "user",
+      "gender": 0,
+      "date_of_birth": "13/12/2000",
+      "address": "",
+      "avatar": "https://example.com/default-avatar.jpg",
+      "phone_number": "",
+      "created_at": "2025-10-09T08:37:08.437Z",
+      "id": 6
     }
   ],
   "manager": [
@@ -61,14 +103,47 @@
   ],
   "subjects": [
     {
-      "id": 1,
-      "subject_name": "HTML, CSS",
-      "created_at": "2022-03-01T00:00:00.000Z"
+      "id": 2,
+      "subject_name": "恋しい",
+      "status": "active"
     },
     {
-      "id": 2,
-      "subject_name": "Javascript",
-      "created_at": "2022-03-01T00:00:00.000Z"
+      "id": 3,
+      "subject_name": "Python",
+      "status": "inactive"
+    },
+    {
+      "id": 4,
+      "subject_name": "Java",
+      "status": "inactive"
+    },
+    {
+      "id": 1,
+      "subject_name": "C++",
+      "status": "inactive"
+    },
+    {
+      "id": 5,
+      "subject_name": "愛してる",
+      "status": "active"
+    },
+    {
+      "subject_name": "C",
+      "status": "active",
+      "created_at": "2025-10-07T07:27:25.750Z",
+      "id": 6
+    },
+    {
+      "subject_name": "C#",
+      "status": "active",
+      "created_at": "2025-10-07T07:27:32.894Z",
+      "id": 7
+    },
+    {
+      "subject_name": "SQL",
+      "status": "active",
+      "created_at": "2025-10-07T07:27:47.998Z",
+      "id": 8
     }
   ],
   "lessons": [
@@ -77,13 +152,29 @@
       "subject_id": 1,
       "lesson_name": "Bài học 1",
       "time": 60,
-      "status": "incomplete",
+      "status": "completed",
       "created_at": "2022-03-01T00:00:00.000Z"
     },
     {
       "id": 2,
       "subject_id": 2,
       "lesson_name": "Bài học 2",
+      "time": 90,
+      "status": "incompleted",
+      "created_at": "2022-03-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "subject_id": 2,
+      "lesson_name": "Bài học 3",
+      "time": 90,
+      "status": "completed",
+      "created_at": "2022-03-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "subject_id": 2,
+      "lesson_name": "Bài học 4",
       "time": 90,
       "status": "completed",
       "created_at": "2022-03-01T00:00:00.000Z"

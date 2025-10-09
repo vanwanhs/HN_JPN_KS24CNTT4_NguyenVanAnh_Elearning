@@ -1,3 +1,4 @@
+// src/routers/AppRouter.tsx
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -9,13 +10,14 @@ import {
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Home from "../pages/Home";
-import Manager from "../components/Manager";
+
+import ManagerLayout from "../pages/Manager";
+import ManagementSubject from "../components/ManagementSubject";
+import ManagementLesson from "../components/ManagementLesson";
+import Statistics from "../components/Statistics";
+
 function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="w-full min-h-screen bg-gray-100">
-      {children}
-    </div>
-  );
+  return <div className="w-full min-h-screen bg-gray-100">{children}</div>;
 }
 
 const getUser = () => {
@@ -36,8 +38,7 @@ export default function AppRouter() {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/" element={
+        <Route path="/" element={
             user ? (
               user.role === "admin" ? (
                 <Navigate to="/manager" replace />
@@ -49,8 +50,10 @@ export default function AppRouter() {
             )
           }
         />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
         <Route
           path="/home"
           element={
@@ -63,17 +66,23 @@ export default function AppRouter() {
             )
           }
         />
+
+        {/* Tạo route con cho manager */}
         <Route
-          path="/manager" element={
+          path="/manager"
+          element={
             user && user.role === "admin" ? (
-              <Layout>
-                <Manager />
-              </Layout>
+              <ManagerLayout />
             ) : (
               <Navigate to="/login" replace />
             )
           }
-        />
+        >
+          <Route index element={<Navigate to="subjects" replace />} />
+          <Route path="subjects" element={<ManagementSubject />} />
+          <Route path="lessons" element={<ManagementLesson />} />
+          <Route path="statistics" element={<Statistics />} />
+        </Route>
       </Routes>
     </Router>
   );

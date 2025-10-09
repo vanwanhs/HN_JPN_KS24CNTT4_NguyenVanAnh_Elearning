@@ -109,3 +109,45 @@ body {
     margin-bottom: 12px;
     display: block;
 }
+/* Modal-login */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: #fff;
+  padding: 40px 60px;
+  min-width: 400px;
+  max-width: 90vw; 
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+
+.modal .modal-message {
+  font-size: 16px;
+  color: rgb(23, 126, 23);
+  font-weight: bold;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
