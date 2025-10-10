@@ -8,7 +8,7 @@ import fb from "../image/Facebook.png";
 import ins from "../image/instar.png";
 import twitter from "../image/Twitter.png";
 import tiktok from "../image/tiktok.png";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -16,6 +16,8 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "completed" | "incomplete">("all");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +36,12 @@ export default function Home() {
     };
     fetchData();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   const filteredSubjects = subjects.filter((subject) => {
     const subjectLessons = lessons.filter(lesson => lesson.subject_id === subject.id);
     const isCompleted = subjectLessons.length > 0 && subjectLessons.every(lesson => lesson.status === "completed");
@@ -76,11 +84,16 @@ export default function Home() {
           <a href="#">Môn học</a>
           <a href="#">Bài học</a>
           <img src={Favorites} alt="book" className="w-6 h-6" />
-          <img src={User} alt="book" className="w-4 h-4" />
+          <img
+            src={User}
+            alt="user"
+            className="w-6 h-6 cursor-pointer hover:opacity-70 transition"
+            onClick={() => setShowLogoutModal(true)}
+          />
         </nav>
       </header>
 
-      {/* Tabs - Bộ lọc trạng thái bài học */}
+      {/* Tabs */}
       <div className="px-40 py-3 border-b border-gray-200 text-sm text-gray-600">
         <div className="flex gap-6">
           <button
@@ -115,10 +128,10 @@ export default function Home() {
               {course.lessons.length > 0 ? (
                 <ul className="text-sm text-gray-600 space-y-1 mb-2">
                   {course.lessons.map((lesson, i) => (
-                   <li key={i} className="flex items-center space-x-2">
-  <img src={circle} alt="Twitter" className="w-4 h-4" />
-  <span>{lesson}</span>
-</li>
+                    <li key={i} className="flex items-center space-x-2">
+                      <img src={circle} alt="ok" className="w-4 h-4" />
+                      <span>{lesson}</span>
+                    </li>
                   ))}
                 </ul>
               ) : (
@@ -131,6 +144,30 @@ export default function Home() {
           ))
         )}
       </main>
+
+      {/* Modal xác nhận đăng xuất */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-[350px] shadow-lg text-center">
+            <h3 className="text-lg font-semibold mb-3">Xác nhận đăng xuất</h3>
+            <p className="text-gray-600 mb-6">Bạn có chắc chắn muốn đăng xuất khỏi tài khoản?</p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
+              >
+                Đăng xuất
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-black text-white text-sm py-6 px-40">
