@@ -18,7 +18,7 @@ export default function ModalConfirmDelete({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40">
       <div className="bg-white w-[400px] rounded-lg shadow-lg p-6 relative">
         <h2 className="text-lg font-semibold text-red-600 flex items-center mb-2">
-          ❗ Xác nhận
+           Xác nhận !
         </h2>
         <p className="text-sm text-gray-700 mb-4">
           Bạn có chắc chắn muốn xoá môn học <b>{subjectName}</b>?

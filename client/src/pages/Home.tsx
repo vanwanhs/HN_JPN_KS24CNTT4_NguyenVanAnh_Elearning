@@ -38,9 +38,9 @@ export default function Home() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+  localStorage.removeItem("user");
+  navigate("/login", { replace: true });
+};
 
   const filteredSubjects = subjects.filter((subject) => {
     const subjectLessons = lessons.filter(lesson => lesson.subject_id === subject.id);

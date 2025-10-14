@@ -1,4 +1,3 @@
-// src/components/ModalAddSubject.tsx
 import { useState } from "react";
 import ReactDOM from "react-dom";
 
@@ -6,25 +5,37 @@ interface ModalAddSubjectProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (subject: { subject_name: string; status: string }) => void;
+  subjects: { subject_name: string }[];
 }
 
-export default function ModalAddSubject({ isOpen, onClose, onSubmit }: ModalAddSubjectProps) {
+
+export default function ModalAddSubject({ isOpen, onClose, onSubmit, subjects }: ModalAddSubjectProps) {
   const [subjectName, setSubjectName] = useState("");
   const [status, setStatus] = useState("active");
   const [error, setError] = useState("");
 
   const handleSubmit = () => {
-    if (!subjectName.trim()) {
-      setError("Tên môn học không được để trống");
-      return;
-    }
-    onSubmit({ subject_name: subjectName.trim(), status });
-    // Reset form
-    setSubjectName("");
-    setStatus("active");
-    setError("");
-    onClose();
-  };
+  if (!subjectName.trim()) {
+    setError("Tên môn học không được để trống");
+    return;
+  }
+
+  const isDuplicate = subjects.some(
+    (s) => s.subject_name.toLowerCase().trim() === subjectName.toLowerCase().trim()
+  );
+
+  if (isDuplicate) {
+    setError("Môn học này đã tồn tại");
+    return;
+  }
+
+  onSubmit({ subject_name: subjectName.trim(), status });
+  setSubjectName("");
+  setStatus("active");
+  setError("");
+  onClose();
+};
+
 
   if (!isOpen) return null;
 

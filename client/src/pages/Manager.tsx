@@ -71,7 +71,6 @@ export default function Manager() {
           </div>
         </header>
 
-        {/* Render các component */}
         <Outlet />
       </main>
     </div>

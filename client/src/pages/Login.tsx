@@ -72,7 +72,7 @@ function Login() {
           } else {
             navigate("/manager");
           }
-        }, 2000); // 2s rồi chuyển trang
+        }, 2000);
       } else {
         setErrors({ ...newErrors, login: "Email hoặc mật khẩu không đúng." });
       }

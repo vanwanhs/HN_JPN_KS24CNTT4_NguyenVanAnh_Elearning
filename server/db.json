@@ -83,6 +83,20 @@
       "phone_number": "",
       "created_at": "2025-10-09T08:37:08.437Z",
       "id": 6
+    },
+    {
+      "first_name": "NH",
+      "last_name": "Anh",
+      "email": "anh@gmail.com",
+      "password": "123456789",
+      "role": "user",
+      "gender": 0,
+      "date_of_birth": "13/12/2000",
+      "address": "",
+      "avatar": "https://example.com/default-avatar.jpg",
+      "phone_number": "",
+      "created_at": "2025-10-10T08:52:24.037Z",
+      "id": 7
     }
   ],
   "manager": [
@@ -124,7 +138,7 @@
     },
     {
       "id": 5,
-      "subject_name": "愛してる",
+      "subject_name": "Anhhs",
       "status": "active"
     },
     {
@@ -144,16 +158,45 @@
       "status": "active",
       "created_at": "2025-10-07T07:27:47.998Z",
       "id": 8
+    },
+    {
+      "subject_name": "Anh",
+      "status": "active",
+      "created_at": "2025-10-13T08:27:44.360Z",
+      "id": 9
+    },
+    {
+      "subject_name": "vvv",
+      "status": "active",
+      "created_at": "2025-10-13T08:28:17.968Z",
+      "id": 10
+    },
+    {
+      "subject_name": "Python",
+      "status": "active",
+      "created_at": "2025-10-13T08:41:14.078Z",
+      "id": 11
+    },
+    {
+      "subject_name": "ÁNh",
+      "status": "active",
+      "created_at": "2025-10-13T08:48:40.260Z",
+      "id": 12
+    },
+    {
+      "subject_name": "hdhdhdhhd",
+      "status": "active",
+      "created_at": "2025-10-14T06:34:28.462Z",
+      "id": 13
     }
   ],
   "lessons": [
     {
       "id": 1,
-      "subject_id": 1,
       "lesson_name": "Bài học 1",
+      "subjectId": 2,
       "time": 60,
-      "status": "completed",
-      "created_at": "2022-03-01T00:00:00.000Z"
+      "status": "completed"
     },
     {
       "id": 2,
@@ -173,6 +216,38 @@
     },
     {
       "id": 2,
+      "subject_id": 2,
+      "lesson_name": "Bài học 4",
+      "time": 90,
+      "status": "completed",
+      "created_at": "2022-03-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "subject_id": 2,
+      "lesson_name": "Bài học 5",
+      "time": 90,
+      "status": "completed",
+      "created_at": "2022-03-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "subject_id": 2,
+      "lesson_name": "Bài học 6",
+      "time": 90,
+      "status": "completed",
+      "created_at": "2022-03-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "subject_id": 2,
+      "lesson_name": "Bài học 4",
+      "time": 90,
+      "status": "completed",
+      "created_at": "2022-03-01T00:00:00.000Z"
+    },
+    {
+      "id": 5,
       "subject_id": 2,
       "lesson_name": "Bài học 4",
       "time": 90,
