@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "../css/Login.css";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +13,6 @@ function Login() {
     password: "",
     login: "",
   });
-  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -56,29 +57,47 @@ function Login() {
 
       if (user) {
         localStorage.setItem("user", JSON.stringify({ ...user, role }));
-        setShowModal(true);
+
+        //  Hiển thị thông báo thành công bằng SweetAlert2
+        Swal.fire({
+          icon: "success",
+          title: "Đăng nhập thành công!",
+          text: role === "user" ? "Chào mừng bạn quay lại!" : "Chào quản trị viên!",
+          showConfirmButton: false,
+          timer: 1500,
+          position: "center",
+        });
 
         setTimeout(() => {
-          setShowModal(false);
-        //   Swal.fire({
-        //   position: "top-end",
-        //   icon: "success",
-        //   title: "Your work has been saved",
-        //   showConfirmButton: false,
-        //   timer: 1500
-        // });
           if (role === "user") {
             navigate("/home");
           } else {
             navigate("/manager");
           }
-        }, 2000);
+          window.location.reload();
+        }, 1600);
       } else {
+        //  Thông báo lỗi đăng nhập sai
+        Swal.fire({
+          icon: "error",
+          title: "Đăng nhập thất bại!",
+          text: "Email hoặc mật khẩu không đúng.",
+          confirmButtonText: "Thử lại",
+        });
         setErrors({ ...newErrors, login: "Email hoặc mật khẩu không đúng." });
       }
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
-      setErrors({ ...newErrors, login: "Đã xảy ra lỗi trong quá trình đăng nhập." });
+      Swal.fire({
+        icon: "error",
+        title: "Lỗi hệ thống!",
+        text: "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại sau.",
+        confirmButtonText: "OK",
+      });
+      setErrors({
+        ...newErrors,
+        login: "Đã xảy ra lỗi trong quá trình đăng nhập.",
+      });
     }
   };
 
@@ -128,14 +147,6 @@ function Login() {
       <p className="login-link">
         Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link>
       </p>
-
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <p className="modal-message"> Đăng nhập thành công!</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

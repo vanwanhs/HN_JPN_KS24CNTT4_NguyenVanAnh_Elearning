@@ -27,76 +27,6 @@
       "phone_number": "",
       "created_at": "2025-10-03T07:19:36.564Z",
       "id": 2
-    },
-    {
-      "first_name": "Hưng",
-      "last_name": "Nguyễn ",
-      "email": "Hung@gmail.com",
-      "password": "123456789",
-      "role": "user",
-      "gender": 0,
-      "date_of_birth": "01/01/2000",
-      "address": "",
-      "avatar": "https://example.com/default-avatar.jpg",
-      "phone_number": "",
-      "created_at": "2025-10-03T07:21:03.956Z",
-      "id": 3
-    },
-    {
-      "first_name": "Hấu",
-      "last_name": "Dưa",
-      "email": "kiki@gmail.com",
-      "password": "123456",
-      "role": "user",
-      "gender": 0,
-      "date_of_birth": "01/01/2000",
-      "address": "",
-      "avatar": "https://example.com/default-avatar.jpg",
-      "phone_number": "",
-      "created_at": "2025-10-08T15:14:46.174Z",
-      "id": 4
-    },
-    {
-      "first_name": "nguyne",
-      "last_name": "8888",
-      "email": "hihi@gmail.com",
-      "password": "123456789",
-      "role": "user",
-      "gender": 0,
-      "date_of_birth": "13/12/2000",
-      "address": "",
-      "avatar": "https://example.com/default-avatar.jpg",
-      "phone_number": "",
-      "created_at": "2025-10-09T08:36:14.715Z",
-      "id": 5
-    },
-    {
-      "first_name": "nguyne",
-      "last_name": " 7777",
-      "email": "4hihi@gmail.com",
-      "password": "123456789",
-      "role": "user",
-      "gender": 0,
-      "date_of_birth": "13/12/2000",
-      "address": "",
-      "avatar": "https://example.com/default-avatar.jpg",
-      "phone_number": "",
-      "created_at": "2025-10-09T08:37:08.437Z",
-      "id": 6
-    },
-    {
-      "first_name": "NH",
-      "last_name": "Anh",
-      "email": "anh@gmail.com",
-      "password": "123456789",
-      "role": "user",
-      "gender": 0,
-      "date_of_birth": "13/12/2000",
-      "address": "",
-      "avatar": "https://example.com/default-avatar.jpg",
-      "phone_number": "",
-      "created_at": "2025-10-10T08:52:24.037Z",
-      "id": 7
     }
   ],
   "manager": [
@@ -117,142 +47,114 @@
   ],
   "subjects": [
     {
-      "id": 2,
-      "subject_name": "恋しい",
-      "status": "active"
-    },
-    {
-      "id": 3,
-      "subject_name": "Python",
-      "status": "inactive"
-    },
-    {
       "id": 4,
       "subject_name": "Java",
-      "status": "inactive"
+      "status": "active"
     },
     {
       "id": 1,
       "subject_name": "C++",
-      "status": "inactive"
-    },
-    {
-      "id": 5,
-      "subject_name": "Anhhs",
       "status": "active"
-    },
-    {
-      "subject_name": "C",
-      "status": "active",
-      "created_at": "2025-10-07T07:27:25.750Z",
-      "id": 6
-    },
-    {
-      "subject_name": "C#",
-      "status": "active",
-      "created_at": "2025-10-07T07:27:32.894Z",
-      "id": 7
-    },
-    {
-      "subject_name": "SQL",
-      "status": "active",
-      "created_at": "2025-10-07T07:27:47.998Z",
-      "id": 8
-    },
-    {
-      "subject_name": "Anh",
-      "status": "active",
-      "created_at": "2025-10-13T08:27:44.360Z",
-      "id": 9
-    },
-    {
-      "subject_name": "vvv",
-      "status": "active",
-      "created_at": "2025-10-13T08:28:17.968Z",
-      "id": 10
     },
     {
       "subject_name": "Python",
       "status": "active",
-      "created_at": "2025-10-13T08:41:14.078Z",
+      "created_at": "2025-10-15T11:59:56.729Z",
+      "id": 5
+    },
+    {
+      "subject_name": "C#",
+      "status": "active",
+      "created_at": "2025-10-15T12:00:15.183Z",
+      "id": 6
+    },
+    {
+      "subject_name": "C",
+      "status": "active",
+      "created_at": "2025-10-15T12:00:21.406Z",
+      "id": 7
+    },
+    {
+      "subject_name": "React-Dom",
+      "status": "active",
+      "created_at": "2025-10-15T12:00:44.966Z",
+      "id": 8
+    },
+    {
+      "subject_name": "Front-end",
+      "status": "active",
+      "created_at": "2025-10-15T12:01:43.014Z",
+      "id": 9
+    },
+    {
+      "subject_name": "Js",
+      "status": "active",
+      "created_at": "2025-10-15T12:01:53.295Z",
+      "id": 10
+    },
+    {
+      "subject_name": "Anh",
+      "status": "active",
+      "created_at": "2025-10-15T13:07:27.266Z",
       "id": 11
-    },
-    {
-      "subject_name": "ÁNh",
-      "status": "active",
-      "created_at": "2025-10-13T08:48:40.260Z",
-      "id": 12
-    },
-    {
-      "subject_name": "hdhdhdhhd",
-      "status": "active",
-      "created_at": "2025-10-14T06:34:28.462Z",
-      "id": 13
     }
   ],
   "lessons": [
     {
-      "id": 1,
-      "lesson_name": "Bài học 1",
-      "subjectId": 2,
+      "lesson_name": "lập trình hướng đối tượng là gì",
+      "time": 45,
+      "status": "incomplete",
+      "subject_id": 4,
+      "created_at": "2025-10-15T11:47:21.163Z",
+      "id": 2
+    },
+    {
+      "lesson_name": "Mở đầu",
+      "time": 45,
+      "status": "incomplete",
+      "subject_id": 1,
+      "created_at": "2025-10-15T11:48:39.738Z",
+      "id": 3
+    },
+    {
+      "lesson_name": "các kiểu dữ liệu",
       "time": 60,
-      "status": "completed"
+      "status": "incomplete",
+      "subject_id": 4,
+      "created_at": "2025-10-15T11:53:38.448Z",
+      "id": 4
     },
     {
-      "id": 2,
-      "subject_id": 2,
-      "lesson_name": "Bài học 2",
-      "time": 90,
-      "status": "incompleted",
-      "created_at": "2022-03-01T00:00:00.000Z"
+      "lesson_name": "bài học 1",
+      "time": 45,
+      "status": "incomplete",
+      "subject_id": 4,
+      "created_at": "2025-10-15T11:56:57.336Z",
+      "id": 5
     },
     {
-      "id": 2,
-      "subject_id": 2,
-      "lesson_name": "Bài học 3",
-      "time": 90,
-      "status": "completed",
-      "created_at": "2022-03-01T00:00:00.000Z"
+      "lesson_name": "bài học 2",
+      "time": 45,
+      "status": "incomplete",
+      "subject_id": 4,
+      "created_at": "2025-10-15T11:57:08.823Z",
+      "id": 6
     },
     {
-      "id": 2,
-      "subject_id": 2,
-      "lesson_name": "Bài học 4",
-      "time": 90,
-      "status": "completed",
-      "created_at": "2022-03-01T00:00:00.000Z"
+      "lesson_name": "bài học 3",
+      "time": 45,
+      "status": "incomplete",
+      "subject_id": 4,
+      "created_at": "2025-10-15T11:57:17.695Z",
+      "id": 7
     },
     {
-      "id": 3,
-      "subject_id": 2,
-      "lesson_name": "Bài học 5",
-      "time": 90,
-      "status": "completed",
-      "created_at": "2022-03-01T00:00:00.000Z"
-    },
-    {
-      "id": 3,
-      "subject_id": 2,
-      "lesson_name": "Bài học 6",
-      "time": 90,
-      "status": "completed",
-      "created_at": "2022-03-01T00:00:00.000Z"
-    },
-    {
-      "id": 5,
-      "subject_id": 2,
-      "lesson_name": "Bài học 4",
-      "time": 90,
-      "status": "completed",
-      "created_at": "2022-03-01T00:00:00.000Z"
-    },
-    {
-      "id": 5,
-      "subject_id": 2,
-      "lesson_name": "Bài học 4",
-      "time": 90,
-      "status": "completed",
-      "created_at": "2022-03-01T00:00:00.000Z"
+      "lesson_name": "Mở đầu",
+      "time": 60,
+      "status": "incomplete",
+      "subject_id": 5,
+      "created_at": "2025-10-15T13:28:59.101Z",
+      "id": 8
     }
   ]
 }

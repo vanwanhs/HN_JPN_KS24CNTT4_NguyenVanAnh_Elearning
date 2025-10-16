@@ -5,7 +5,7 @@ export interface Subject{
     status:string;
 }
 export interface Lesson{
-      id:string;
+      id:number;
       subject_id: number;
       lesson_name: string;
       time: number;

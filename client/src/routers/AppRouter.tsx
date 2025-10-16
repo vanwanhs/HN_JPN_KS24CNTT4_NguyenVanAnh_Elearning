@@ -67,7 +67,7 @@ export default function AppRouter() {
           }
         />
 
-        {/* Tạo route con cho manager */}
+        {/* Tạo route con cho manager*/}
         <Route
           path="/manager"
           element={

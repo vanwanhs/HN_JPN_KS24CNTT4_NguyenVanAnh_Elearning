@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSubjectsByPage } from "../store/slices/paginationSubjectSlice";
+import {
+  fetchSubjectsByPage,
+  addSubject,
+  updateSubject,
+  deleteSubject,
+} from "../store/slices/paginationSubjectSlice";
 import type { Subject } from "../utils/types";
 import ModalAddSubject from "../components/ModalAddSubject";
 import ModalUpdateSubject from "./ModalUpdateSubject";
@@ -24,16 +29,16 @@ const statusColor: Record<string, string> = {
 };
 
 export default function ManagementSubject() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const { list: subjects, loading, totalPages } = useSelector(
     (state: any) => state.paginationSubjects
   );
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-
-  // 🔹 Sort
-  const [sortOption, setSortOption] = useState<"name_asc" | "name_desc" | "date_new" | "date_old" | "">("");
+  const [sortOption, setSortOption] = useState<
+    "name_asc" | "name_desc" | "date_new" | "date_old" | ""
+  >("");
   const [showSortMenu, setShowSortMenu] = useState(false);
 
   // Modal
@@ -48,43 +53,86 @@ export default function ManagementSubject() {
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 6;
 
-  // Load dữ liệu khi component mount hoặc params thay đổi
+  // Load dữ liệu
   useEffect(() => {
-    dispatch(fetchSubjectsByPage({ page: currentPage, limit: perPage, search, status: statusFilter }));
-  }, [dispatch, currentPage, search, statusFilter]);
+    dispatch(
+      fetchSubjectsByPage({
+        page: currentPage,
+        limit: perPage,
+        search,
+        status: statusFilter,
+        sort: sortOption,
+      })
+    );
+  }, [dispatch, currentPage, search, statusFilter, sortOption]);
 
   // Thêm
-  const handleAddSubject = async (newSubject: { subject_name: string; status: string }) => {
-    await axios.post("http://localhost:8080/subjects", {
-      ...newSubject,
-      created_at: new Date().toISOString(),
-    });
-    dispatch(fetchSubjectsByPage({ page: currentPage, limit: perPage, search, status: statusFilter }));
+  const handleAddSubject = async (newSubject: {
+    subject_name: string;
+    status: string;
+  }) => {
+    await dispatch(addSubject(newSubject));
+    dispatch(
+      fetchSubjectsByPage({
+        page: currentPage,
+        limit: perPage,
+        search,
+        status: statusFilter,
+        sort: sortOption,
+      })
+    );
     setShowModal(false);
   };
 
   // Sửa
-  const handleUpdateSubject = async (updatedSubject: { id: number; subject_name: string; status: string }) => {
-    await axios.put(`http://localhost:8080/subjects/${updatedSubject.id}`, updatedSubject);
-    dispatch(fetchSubjectsByPage({ page: currentPage, limit: perPage, search, status: statusFilter }));
+  const handleUpdateSubject = async (updatedSubject: {
+    id: number;
+    subject_name: string;
+    status: string;
+  }) => {
+    await dispatch(updateSubject(updatedSubject));
+    dispatch(
+      fetchSubjectsByPage({
+        page: currentPage,
+        limit: perPage,
+        search,
+        status: statusFilter,
+        sort: sortOption,
+      })
+    );
     setShowUpdateModal(false);
   };
 
   // Xóa
   const handleDeleteSubject = async () => {
-    if (subjectToDelete) {
-      await axios.delete(`http://localhost:8080/subjects/${subjectToDelete.id}`);
-      dispatch(fetchSubjectsByPage({ page: currentPage, limit: perPage, search, status: statusFilter }));
+    if (!subjectToDelete) return;
+
+    try {
+      const lessonsRes = await axios.get(
+        `http://localhost:8080/lessons?subject_id=${subjectToDelete.id}`
+      );
+      const lessons = lessonsRes.data;
+      await Promise.all(
+        lessons.map((lesson: any) =>
+          axios.delete(`http://localhost:8080/lessons/${lesson.id}`)
+        )
+      );
+
+      await dispatch(deleteSubject(subjectToDelete.id));
+      dispatch(
+        fetchSubjectsByPage({
+          page: currentPage,
+          limit: perPage,
+          search,
+          status: statusFilter,
+          sort: sortOption,
+        })
+      );
       setShowToast(true);
+    } catch (error) {
+      console.error(" Lỗi khi xoá môn học và bài học liên quan:", error);
     }
   };
-
-  // 🔹 Hàm sắp xếp local
-  const sortedSubjects = [...subjects].sort((a, b) => {
-    if (sortOption === "name_asc") return a.subject_name.localeCompare(b.subject_name);
-    if (sortOption === "name_desc") return b.subject_name.localeCompare(a.subject_name);
-    return 0;
-  });
 
   return (
     <div className="relative">
@@ -92,8 +140,7 @@ export default function ManagementSubject() {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onSubmit={handleAddSubject}
-        subjects={subjects} 
-
+        subjects={subjects}
       />
       <ModalUpdateSubject
         isOpen={showUpdateModal}
@@ -151,7 +198,9 @@ export default function ManagementSubject() {
         {/* Table */}
         <div className="flex-1 overflow-auto bg-white shadow rounded relative">
           {loading ? (
-            <div className="text-center py-6 text-gray-500 italic">Đang tải dữ liệu...</div>
+            <div className="text-center py-6 text-gray-500 italic">
+              Đang tải dữ liệu...
+            </div>
           ) : (
             <table className="min-w-full text-sm text-left">
               <thead className="bg-gray-100 border-b relative">
@@ -164,7 +213,6 @@ export default function ManagementSubject() {
                       className="w-4 h-5 cursor-pointer"
                       onClick={() => setShowSortMenu((prev) => !prev)}
                     />
-                    {/* Menu sắp xếp */}
                     {showSortMenu && (
                       <div className="absolute left-24 top-10 bg-white border rounded shadow-md text-sm z-10 w-48">
                         <button
@@ -193,8 +241,8 @@ export default function ManagementSubject() {
                 </tr>
               </thead>
               <tbody>
-                {sortedSubjects.length > 0 ? (
-                  sortedSubjects.map((subject: Subject) => (
+                {subjects.length > 0 ? (
+                  subjects.map((subject: Subject) => (
                     <tr key={subject.id} className="border-b hover:bg-gray-50">
                       <td className="px-4 py-3">{subject.subject_name}</td>
                       <td className="px-4 py-3">
@@ -229,7 +277,10 @@ export default function ManagementSubject() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={3} className="px-4 py-6 text-center text-gray-500 italic">
+                    <td
+                      colSpan={3}
+                      className="px-4 py-6 text-center text-gray-500 italic"
+                    >
                       Không tìm thấy môn học nào.
                     </td>
                   </tr>

@@ -8,10 +8,14 @@ interface ModalAddLessonProps {
     lesson_name: string;
     time: number;
     status: string;
-    subject_id: string;
+    subject_id: number; // ✅ giữ kiểu number
   }) => void;
   subjects: { id: number; subject_name: string }[];
-  existingLessons: { lesson_name: string; subject_id?: string | number; subjectId?: string | number }[];
+  existingLessons: {
+    lesson_name: string;
+    subject_id?: string | number;
+    subjectId?: string | number;
+  }[];
 }
 
 export default function ModalAddLesson({
@@ -24,7 +28,7 @@ export default function ModalAddLesson({
   const [lessonName, setLessonName] = useState("");
   const [time, setTime] = useState<number>(0);
   const [status, setStatus] = useState("incomplete");
-  const [subjectId, setSubjectId] = useState("");
+  const [subjectId, setSubjectId] = useState<number | "">("");
   const [error, setError] = useState("");
 
   const handleSubmit = () => {
@@ -44,11 +48,11 @@ export default function ModalAddLesson({
       return;
     }
 
-    const normalizedSubjectId = String(subjectId);
+    const normalizedSubjectId = Number(subjectId);
 
     const isDuplicate = existingLessons.some(
       (lesson) =>
-        String(lesson.subject_id || lesson.subjectId) === normalizedSubjectId &&
+        Number(lesson.subject_id || lesson.subjectId) === normalizedSubjectId &&
         lesson.lesson_name.trim().toLowerCase() === trimmedName.toLowerCase()
     );
 
@@ -56,6 +60,8 @@ export default function ModalAddLesson({
       setError("Bài học này đã tồn tại trong môn học đã chọn");
       return;
     }
+
+    //  Gửi đúng kiểu number cho subject_id
     onSubmit({
       lesson_name: trimmedName,
       time,
@@ -63,6 +69,7 @@ export default function ModalAddLesson({
       subject_id: normalizedSubjectId,
     });
 
+    // Reset form
     setLessonName("");
     setTime(0);
     setStatus("incomplete");
@@ -86,10 +93,12 @@ export default function ModalAddLesson({
         <h2 className="text-lg font-semibold mb-4">Thêm mới bài học</h2>
 
         <div className="mb-4">
-          <label className="block mb-1 font-medium text-gray-700">Chọn môn học</label>
+          <label className="block mb-1 font-medium text-gray-700">
+            Chọn môn học
+          </label>
           <select
             value={subjectId}
-            onChange={(e) => setSubjectId(e.target.value)}
+            onChange={(e) => setSubjectId(Number(e.target.value))} // ✅ ép kiểu về number
             className="w-full border px-3 py-2 rounded border-gray-300"
           >
             <option value="">-- Chọn môn học --</option>
@@ -100,8 +109,11 @@ export default function ModalAddLesson({
             ))}
           </select>
         </div>
+
         <div className="mb-4">
-          <label className="block mb-1 font-medium text-gray-700">Tên bài học</label>
+          <label className="block mb-1 font-medium text-gray-700">
+            Tên bài học
+          </label>
           <input
             type="text"
             value={lessonName}
@@ -112,7 +124,9 @@ export default function ModalAddLesson({
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1 font-medium text-gray-700">Thời lượng (phút)</label>
+          <label className="block mb-1 font-medium text-gray-700">
+            Thời lượng (phút)
+          </label>
           <input
             type="number"
             value={time}
