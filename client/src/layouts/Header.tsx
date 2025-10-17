@@ -1,6 +1,6 @@
 import React from "react";
 import Favorites from "../image/Favorites.png";
-import User from "../image/user.png";
+import User from "../image/onion.jpg";
 
 interface HeaderProps {
   searchTerm: string;

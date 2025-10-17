@@ -4,9 +4,6 @@ import type { Subject } from "../../utils/types";
 
 const BASE_URL = "http://localhost:8080/subjects";
 
-// =======================
-//  FETCH - Phân trang + Lọc + Tìm kiếm + Sắp xếp
-// =======================
 export const fetchSubjectsByPage = createAsyncThunk(
   "subjects/fetchByPage",
   async ({
@@ -32,12 +29,6 @@ export const fetchSubjectsByPage = createAsyncThunk(
     } else if (sort === "name_desc") {
       params._sort = "subject_name";
       params._order = "desc";
-    } else if (sort === "date_new") {
-      params._sort = "created_at";
-      params._order = "desc";
-    } else if (sort === "date_old") {
-      params._sort = "created_at";
-      params._order = "asc";
     }
 
     const res = await axios.get<Subject[]>(BASE_URL, { params });
@@ -46,9 +37,7 @@ export const fetchSubjectsByPage = createAsyncThunk(
   }
 );
 
-// =======================
-//  ADD
-// =======================
+
 export const addSubject = createAsyncThunk(
   "subjects/addSubject",
   async (newSubject: { subject_name: string; status: string }) => {
@@ -60,9 +49,6 @@ export const addSubject = createAsyncThunk(
   }
 );
 
-// =======================
-//  UPDATE
-// =======================
 export const updateSubject = createAsyncThunk(
   "subjects/updateSubject",
   async (updatedSubject: { id: number; subject_name: string; status: string }) => {
@@ -71,9 +57,7 @@ export const updateSubject = createAsyncThunk(
   }
 );
 
-// =======================
-//  DELETE
-// =======================
+
 export const deleteSubject = createAsyncThunk(
   "subjects/deleteSubject",
   async (id: number) => {
@@ -82,9 +66,7 @@ export const deleteSubject = createAsyncThunk(
   }
 );
 
-// =======================
-//  SLICE
-// =======================
+
 const paginationSubjectSlice = createSlice({
   name: "paginationSubjects",
   initialState: {
@@ -96,7 +78,6 @@ const paginationSubjectSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // FETCH
       .addCase(fetchSubjectsByPage.pending, (state) => {
         state.loading = true;
       })
@@ -110,18 +91,15 @@ const paginationSubjectSlice = createSlice({
         state.error = action.error.message || "Lỗi không xác định";
       })
 
-      // ADD
       .addCase(addSubject.fulfilled, (state, action) => {
         state.list.unshift(action.payload);
       })
 
-      // UPDATE
       .addCase(updateSubject.fulfilled, (state, action) => {
         const index = state.list.findIndex((s) => s.id === action.payload.id);
         if (index !== -1) state.list[index] = action.payload;
       })
 
-      // DELETE
       .addCase(deleteSubject.fulfilled, (state, action) => {
         state.list = state.list.filter((s) => s.id !== action.payload);
       });

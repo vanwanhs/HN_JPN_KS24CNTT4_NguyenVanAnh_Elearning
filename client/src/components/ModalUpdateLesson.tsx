@@ -3,17 +3,20 @@ import ReactDOM from "react-dom";
 import axios from "axios";
 import type { Subject } from "../utils/types";
 
+interface LessonData {
+  id: number;
+  lesson_name: string;
+  subjectId: number;
+  time: number;
+  status: string;
+}
+
 interface ModalUpdateLessonProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (lesson: { id: number; lesson_name: string; subjectId: number; time: number; status: string }) => void;
-  lessonData: {
-    id: number;
-    lesson_name: string;
-    subjectId: number;
-    time: number;
-    status: string;
-  } | null;
+  onSubmit: (lesson: LessonData) => void;
+  lessonData: LessonData | null;
+  existingLessons: LessonData[]; // Danh sách bài học để validate trùng
 }
 
 export default function ModalUpdateLesson({
@@ -21,6 +24,7 @@ export default function ModalUpdateLesson({
   onClose,
   onSubmit,
   lessonData,
+  existingLessons,
 }: ModalUpdateLessonProps) {
   const [lessonName, setLessonName] = useState("");
   const [subjectId, setSubjectId] = useState<number | "">("");
@@ -29,12 +33,12 @@ export default function ModalUpdateLesson({
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [error, setError] = useState("");
 
-  //  Lấy danh sách môn học từ db.json
+  // Lấy danh sách môn học
   useEffect(() => {
     axios.get("http://localhost:8080/subjects").then((res) => setSubjects(res.data));
   }, []);
 
-  //  Khi mở modal, điền sẵn thông tin bài học
+  // Điền sẵn dữ liệu khi mở modal
   useEffect(() => {
     if (lessonData) {
       setLessonName(lessonData.lesson_name);
@@ -45,7 +49,8 @@ export default function ModalUpdateLesson({
   }, [lessonData]);
 
   const handleSubmit = () => {
-    if (!lessonName.trim()) {
+    const trimmedName = lessonName.trim();
+    if (!trimmedName) {
       setError("Tên bài học không được để trống");
       return;
     }
@@ -57,10 +62,21 @@ export default function ModalUpdateLesson({
       setError("Thời gian phải lớn hơn 0");
       return;
     }
+    const isDuplicate = existingLessons?.some(
+      (lesson) =>
+        lesson.id !== lessonData?.id &&
+        Number(lesson.subjectId) === Number(subjectId) &&
+        lesson.lesson_name.trim().toLowerCase() === trimmedName.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      setError("Bài học này đã tồn tại trong môn học đã chọn");
+      return;
+    }
 
     onSubmit({
       id: lessonData?.id || 0,
-      lesson_name: lessonName.trim(),
+      lesson_name: trimmedName,
       subjectId: Number(subjectId),
       time: Number(time),
       status,
@@ -87,9 +103,7 @@ export default function ModalUpdateLesson({
 
         {/* Tên bài học */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Tên bài học
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Tên bài học</label>
           <input
             type="text"
             value={lessonName}
@@ -97,27 +111,21 @@ export default function ModalUpdateLesson({
               setLessonName(e.target.value);
               setError("");
             }}
-            className={`w-full border px-3 py-2 rounded ${
-              error ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`w-full border px-3 py-2 rounded ${error ? "border-red-500" : "border-gray-300"}`}
             placeholder="Nhập tên bài học..."
           />
         </div>
 
         {/* Môn học */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Môn học
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Môn học</label>
           <select
             value={subjectId}
             onChange={(e) => {
               setSubjectId(Number(e.target.value));
               setError("");
             }}
-            className={`w-full border px-3 py-2 rounded ${
-              error ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`w-full border px-3 py-2 rounded ${error ? "border-red-500" : "border-gray-300"}`}
           >
             <option value="">-- Chọn môn học --</option>
             {subjects.map((s) => (
@@ -130,9 +138,7 @@ export default function ModalUpdateLesson({
 
         {/* Thời gian */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Thời lượng (phút)
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Thời lượng (phút)</label>
           <input
             type="number"
             value={time}
@@ -140,12 +146,11 @@ export default function ModalUpdateLesson({
               setTime(Number(e.target.value));
               setError("");
             }}
-            className={`w-full border px-3 py-2 rounded ${
-              error ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`w-full border px-3 py-2 rounded ${error ? "border-red-500" : "border-gray-300"}`}
             placeholder="Nhập thời lượng bài học..."
           />
         </div>
+
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
         {/* Nút hành động */}

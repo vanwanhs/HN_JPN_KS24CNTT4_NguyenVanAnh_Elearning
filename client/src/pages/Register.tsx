@@ -124,7 +124,7 @@ export default function Register() {
         <input
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value.trimStart())}
         />
         <span className="error-message">{errors.password}</span>
 
@@ -132,7 +132,7 @@ export default function Register() {
         <input
           type="password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e) => setConfirmPassword(e.target.value.trimStart())}
         />
         <span className="error-message">{errors.confirmPassword}</span>
 

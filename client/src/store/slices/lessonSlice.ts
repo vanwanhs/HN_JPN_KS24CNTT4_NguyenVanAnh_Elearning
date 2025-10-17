@@ -2,9 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { Lesson } from "../../utils/types";
 
-// =======================
-//  FETCH (Phân trang, tìm kiếm, lọc)
-// =======================
 export const getAllLessons = createAsyncThunk(
   "lessons/getAll",
   async ({
@@ -36,9 +33,6 @@ export const getAllLessons = createAsyncThunk(
   }
 );
 
-// =======================
-//  ADD
-// =======================
 export const addLesson = createAsyncThunk(
   "lessons/addLesson",
   async (newLesson: { lesson_name: string; time: number; status: string; subject_id: number }) => {
@@ -50,9 +44,6 @@ export const addLesson = createAsyncThunk(
   }
 );
 
-// =======================
-//  UPDATE
-// =======================
 export const updateLesson = createAsyncThunk(
   "lessons/updateLesson",
   async (updatedLesson: Lesson) => {
@@ -61,17 +52,12 @@ export const updateLesson = createAsyncThunk(
   }
 );
 
-// =======================
-//  DELETE
-// =======================
 export const deleteLesson = createAsyncThunk("lessons/deleteLesson", async (id: number) => {
   await axios.delete(`http://localhost:8080/lessons/${id}`);
   return id;
 });
 
-// =======================
-//  SLICE
-// =======================
+
 const lessonSlice = createSlice({
   name: "lessons",
   initialState: {
@@ -83,7 +69,6 @@ const lessonSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // FETCH
       .addCase(getAllLessons.pending, (state) => {
         state.loading = true;
       })
@@ -98,18 +83,15 @@ const lessonSlice = createSlice({
         state.error = action.error.message ?? "Lỗi không xác định";
       })
 
-      // ADD
       .addCase(addLesson.fulfilled, (state, action) => {
         state.list.unshift(action.payload);
       })
 
-      // UPDATE
       .addCase(updateLesson.fulfilled, (state, action) => {
         const index = state.list.findIndex((l) => l.id === action.payload.id);
         if (index !== -1) state.list[index] = action.payload;
       })
 
-      // DELETE
       .addCase(deleteLesson.fulfilled, (state, action) => {
         state.list = state.list.filter((l) => l.id !== action.payload);
       });

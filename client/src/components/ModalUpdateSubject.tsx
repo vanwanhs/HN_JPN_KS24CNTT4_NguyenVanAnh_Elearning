@@ -42,6 +42,7 @@ export default function ModalUpdateSubject({ isOpen, onClose, onSubmit, subject 
     onClose();
   };
 
+
   if (!isOpen || !subject) return null;
 
   return ReactDOM.createPortal(

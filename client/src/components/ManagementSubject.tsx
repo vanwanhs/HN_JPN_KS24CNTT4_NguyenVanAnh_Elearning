@@ -17,6 +17,7 @@ import pen from "../image/pen.png";
 import arrow_down from "../image/arrow-down.png";
 import { FiPlus } from "react-icons/fi";
 import axios from "axios";
+import { DiTechcrunch } from "react-icons/di";
 
 const statusLabel: Record<string, string> = {
   active: "Đang hoạt động",
@@ -30,18 +31,19 @@ const statusColor: Record<string, string> = {
 
 export default function ManagementSubject() {
   const dispatch = useDispatch<any>();
-  const { list: subjects, loading, totalPages } = useSelector(
-    (state: any) => state.paginationSubjects
-  );
+  const {
+    list: subjects,
+    loading,
+    totalPages,
+  } = useSelector((state: any) => state.paginationSubjects);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [sortOption, setSortOption] = useState<
-    "name_asc" | "name_desc" | "date_new" | "date_old" | ""
-  >("");
-  const [showSortMenu, setShowSortMenu] = useState(false);
+  const [sortOption, setSortOption] = useState<"name_asc" | "name_desc" | "">(
+    ""
+  );
+  const [isAsc, setIsAsc] = useState<boolean | null>(null);
 
-  // Modal
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
@@ -49,11 +51,11 @@ export default function ManagementSubject() {
   const [subjectToDelete, setSubjectToDelete] = useState<Subject | null>(null);
   const [showToast, setShowToast] = useState(false);
 
-  // Pagination
+
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 6;
 
-  // Load dữ liệu
+
   useEffect(() => {
     dispatch(
       fetchSubjectsByPage({
@@ -61,16 +63,13 @@ export default function ManagementSubject() {
         limit: perPage,
         search,
         status: statusFilter,
+        // sort: "created_at_desc",
         sort: sortOption,
       })
     );
   }, [dispatch, currentPage, search, statusFilter, sortOption]);
 
-  // Thêm
-  const handleAddSubject = async (newSubject: {
-    subject_name: string;
-    status: string;
-  }) => {
+  const handleAddSubject = async (newSubject: {subject_name: string;status: string;}) => {
     await dispatch(addSubject(newSubject));
     dispatch(
       fetchSubjectsByPage({
@@ -84,7 +83,6 @@ export default function ManagementSubject() {
     setShowModal(false);
   };
 
-  // Sửa
   const handleUpdateSubject = async (updatedSubject: {
     id: number;
     subject_name: string;
@@ -103,7 +101,6 @@ export default function ManagementSubject() {
     setShowUpdateModal(false);
   };
 
-  // Xóa
   const handleDeleteSubject = async () => {
     if (!subjectToDelete) return;
 
@@ -162,7 +159,6 @@ export default function ManagementSubject() {
       )}
 
       <main className="flex-1 flex flex-col">
-        {/* Header actions */}
         <div className="flex items-center justify-between mb-3">
           <h1 className="text-xl font-semibold">Danh sách môn học</h1>
           <div className="flex space-x-2">
@@ -184,7 +180,6 @@ export default function ManagementSubject() {
           </div>
         </div>
 
-        {/* Search */}
         <div className="flex justify-end mb-4">
           <input
             type="text"
@@ -195,7 +190,6 @@ export default function ManagementSubject() {
           />
         </div>
 
-        {/* Table */}
         <div className="flex-1 overflow-auto bg-white shadow rounded relative">
           {loading ? (
             <div className="text-center py-6 text-gray-500 italic">
@@ -205,36 +199,22 @@ export default function ManagementSubject() {
             <table className="min-w-full text-sm text-left">
               <thead className="bg-gray-100 border-b relative">
                 <tr>
-                  <th className="px-4 py-3 flex items-center gap-1 relative">
+                  <th
+                    className="px-4 py-3 flex items-center gap-1 cursor-pointer"
+                    onClick={() => {
+                      const newIsAsc = isAsc === null ? true : !isAsc;
+                      setIsAsc(newIsAsc);
+                      setSortOption(newIsAsc ? "name_asc" : "name_desc");
+                    }}
+                  >
                     Tên môn học
                     <img
                       src={arrow_down}
                       alt="menu"
-                      className="w-4 h-5 cursor-pointer"
-                      onClick={() => setShowSortMenu((prev) => !prev)}
+                      className={`w-4 h-5 ml-1 transition-transform duration-200 ${
+                        isAsc === null ? "" : isAsc ? "rotate-0" : "rotate-180"
+                      }`}
                     />
-                    {showSortMenu && (
-                      <div className="absolute left-24 top-10 bg-white border rounded shadow-md text-sm z-10 w-48">
-                        <button
-                          onClick={() => {
-                            setSortOption("name_asc");
-                            setShowSortMenu(false);
-                          }}
-                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                        >
-                          Sắp xếp theo tên (A → Z)
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSortOption("name_desc");
-                            setShowSortMenu(false);
-                          }}
-                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                        >
-                          Sắp xếp theo tên (Z → A)
-                        </button>
-                      </div>
-                    )}
                   </th>
                   <th className="px-4 py-3">Trạng thái</th>
                   <th className="px-4 py-3 text-center">Chức năng</th>
@@ -247,7 +227,9 @@ export default function ManagementSubject() {
                       <td className="px-4 py-3">{subject.subject_name}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${statusColor[subject.status]}`}
+                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${
+                            statusColor[subject.status]
+                          }`}
                         >
                           <span className="w-2 h-2 rounded-full bg-current" />
                           {statusLabel[subject.status]}

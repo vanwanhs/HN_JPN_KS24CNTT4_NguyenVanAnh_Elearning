@@ -57,8 +57,6 @@ function Login() {
 
       if (user) {
         localStorage.setItem("user", JSON.stringify({ ...user, role }));
-
-        //  Hiển thị thông báo thành công bằng SweetAlert2
         Swal.fire({
           icon: "success",
           title: "Đăng nhập thành công!",
@@ -77,7 +75,6 @@ function Login() {
           window.location.reload();
         }, 1600);
       } else {
-        //  Thông báo lỗi đăng nhập sai
         Swal.fire({
           icon: "error",
           title: "Đăng nhập thất bại!",

@@ -15,7 +15,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
         className="px-3 py-1 border rounded hover:bg-gray-100"
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-      >
+      > 
         ←
       </button>
 

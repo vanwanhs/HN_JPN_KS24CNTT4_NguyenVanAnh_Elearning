@@ -16,7 +16,6 @@ export default function Home() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
-  //  dùng đúng state key là "home"
   const { subjects, loading, currentPage, totalPages, perPage } = useSelector(
     (state: any) => state.home
   );
@@ -29,12 +28,10 @@ export default function Home() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<any | null>(null);
 
-  // Gọi API lấy môn học khi đổi trang
   useEffect(() => {
     dispatch(getAllSubjects({ page: currentPage, limit: perPage }));
   }, [dispatch, currentPage, perPage]);
 
-  //  Lấy danh sách bài học
   useEffect(() => {
     const fetchLessons = async () => {
       try {
@@ -52,15 +49,13 @@ export default function Home() {
     navigate("/login", { replace: true });
   };
 
-  //  Khi bấm chuyển trang
   const handlePageChange = (page: number) => {
-    dispatch(setPage(page)); // cập nhật currentPage
+    dispatch(setPage(page));
   };
 
   if (loading)
     return <div className="text-center py-10">Đang tải dữ liệu...</div>;
 
-  //  Lọc môn học
   const filteredSubjects = subjects.filter((subject) => {
     const subjectLessons = lessons.filter(
       (lesson) => Number(lesson.subject_id) === Number(subject.id)
@@ -112,7 +107,7 @@ export default function Home() {
         )}
       </main>
 
-      {/* 🧭 Phân trang */}
+      {/* Phân trang */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

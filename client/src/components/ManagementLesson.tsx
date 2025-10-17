@@ -56,7 +56,7 @@ export default function ManagementLesson() {
       .then((res) => setSubjects(res.data));
   }, []);
 
-  // === Thêm bài học ===
+  // Thêm bài học
   const handleAddLesson = async (newLesson: {
     lesson_name: string;
     time: number;
@@ -75,7 +75,7 @@ export default function ManagementLesson() {
     setShowModal(false);
   };
 
-  // === Sửa bài học ===
+  // Sửa bài học
   const handleEditLesson = (lesson: any) => {
     setSelectedLesson(lesson);
     setIsUpdateOpen(true);
@@ -94,7 +94,7 @@ export default function ManagementLesson() {
     setIsUpdateOpen(false);
   };
 
-  // === Xoá bài học ===
+  // Xoá bài học
   const handleDeleteLesson = async (id: number) => {
   const result = await Swal.fire({
     title: "Xác nhận xóa",
@@ -136,8 +136,6 @@ export default function ManagementLesson() {
   }
 };
 
-
-  // === Toggle hoàn thành ===
   const handleToggleComplete = async (lesson: any) => {
     const updated = {
       ...lesson,
@@ -145,10 +143,8 @@ export default function ManagementLesson() {
         lesson.status === "completed" ? "incomplete" : "completed",
     };
 
-    // Cập nhật DB (đi qua Redux slice)
     await dispatch(updateLesson(updated));
 
-    // Cập nhật lại danh sách
     dispatch(
       getAllLessons({
         page: currentPage,
@@ -159,7 +155,7 @@ export default function ManagementLesson() {
     );
   };
 
-  // === Hàm sắp xếp ===
+
   const handleSort = (field: "lesson_name" | "time") => {
     if (sortField === field) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -184,6 +180,7 @@ export default function ManagementLesson() {
         onClose={() => setIsUpdateOpen(false)}
         onSubmit={handleUpdateLesson}
         lessonData={selectedLesson}
+        existingLessons={lessons}
       />
 
       <main className="flex-1 flex flex-col">
